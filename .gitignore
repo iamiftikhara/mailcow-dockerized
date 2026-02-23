@@ -7,6 +7,8 @@
 .vscode/*
 data/assets/ssl-example/*
 data/assets/ssl/*
+data/data/assets/
+data/data/conf/mysql/
 data/conf/borgmatic/
 data/conf/clamav/whitelist.ign2
 data/conf/dovecot/acl_anyone
