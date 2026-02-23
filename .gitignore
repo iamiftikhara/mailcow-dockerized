@@ -9,6 +9,8 @@ data/assets/ssl-example/*
 data/assets/ssl/*
 data/data/assets/
 data/data/conf/mysql/
+helper-scripts/rotate-certificates.sh
+helper-scripts/renew-letsencrypt.sh
 data/conf/borgmatic/
 data/conf/clamav/whitelist.ign2
 data/conf/dovecot/acl_anyone
