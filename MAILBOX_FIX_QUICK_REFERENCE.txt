@@ -1,0 +1,51 @@
+# Quick Fix Summary
+
+## Problem
+Email sending was failing with: `"Sender address rejected: not owned by user [email@domain.com]"`
+
+## Root Cause
+Mailboxes lacked `sender_allowed=1` flag required by Postfix's sender validation
+
+## What Was Fixed
+
+### ✅ Applied Fixes
+
+1. **Fixed all 6 existing mailboxes** in risewithcode.com:
+   - admin@risewithcode.com
+   - ceo@risewithcode.com  
+   - contact@risewithcode.com
+   - info@risewithcode.com
+   - noreply@risewithcode.com
+   - support@risewithcode.com
+
+2. **Fixed the mailbox creation code** in `data/web/inc/functions.mailbox.inc.php`:
+   - New mailboxes will now automatically have `sender_allowed=1` set
+
+3. **Created helper script** at `helper-scripts/fix-mailbox-sender-aliases.sh`:
+   - Can fix any mailboxes created before this patch
+   - Usage: `./helper-scripts/fix-mailbox-sender-aliases.sh [domain]`
+
+4. **Created documentation** at `MAILBOX_SENDER_FIX.md`:
+   - Complete technical details and testing procedures
+
+## How to Test
+
+1. Login to SOGo with any mailbox account
+2. Create a new draft email
+3. Check the "From" dropdown - you should see your mailbox address
+4. Send an email - it should work without errors
+
+## For Future Mailboxes
+
+Any mailboxes created **after this fix** will automatically work.
+
+If you create mailboxes from a backup or need to migrate data, run:
+```bash
+./helper-scripts/fix-mailbox-sender-aliases.sh
+```
+
+## Need Help?
+
+- Full details: See `MAILBOX_SENDER_FIX.md`
+- Check logs: `docker logs mailcowdockerized-postfix-mailcow-1`
+- Verify DB: `./helper-scripts/fix-mailbox-sender-aliases.sh` (shows status)

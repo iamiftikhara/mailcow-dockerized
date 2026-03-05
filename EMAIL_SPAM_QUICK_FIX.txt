@@ -1,0 +1,54 @@
+# Email Spam Fix - Quick Reference
+
+## Issue
+✗ Emails going to spam folder
+
+## Root Cause  
+✗ DKIM signing keys not loaded in Redis
+
+## What Was Fixed
+
+### ✅ Loaded DKIM Keys into Redis
+- Private key: `DKIM_PRIV_KEYS(risewithcode.com,dkim)`
+- Selector: `DKIM_SELECTORS(risewithcode.com)`
+- Helper script created: `helper-scripts/load-dkim-keys.sh`
+
+### ✅ Rspamd DKIM Signing Now Active
+- Emails from mailcow now have DKIM signatures
+- Authentication headers are properly added
+- Spam score improved for authenticated senders
+
+## How to Test
+
+1. **Send a test email** from SOGo to Gmail/Outlook
+2. **Check if it goes to Inbox** (not spam)
+3. **Verify DKIM signature** in email headers (Gmail: "Show original")
+
+## If Issues Persist
+
+Check DNS records:
+```bash
+# SPF
+nslookup -type=TXT risewithcode.com
+
+# DKIM  
+nslookup -type=TXT dkim._domainkey.risewithcode.com  
+
+# DMARC
+nslookup -type=TXT _dmarc.risewithcode.com
+```
+
+Reload DKIM keys:
+```bash
+./helper-scripts/load-dkim-keys.sh
+```
+
+## For New Domains
+Run the helper script when adding new domains:
+```bash
+./helper-scripts/load-dkim-keys.sh
+```
+
+---
+
+**Full Documentation:** See `EMAIL_SPAM_FIX.md`

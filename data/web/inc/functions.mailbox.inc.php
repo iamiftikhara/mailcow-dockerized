@@ -1276,8 +1276,8 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
           $stmt = $pdo->prepare("INSERT INTO `quota2replica` (`username`, `bytes`, `messages`)
             VALUES (:username, '0', '0') ON DUPLICATE KEY UPDATE `bytes` = '0', `messages` = '0';");
           $stmt->execute(array(':username' => $username));
-          $stmt = $pdo->prepare("INSERT INTO `alias` (`address`, `goto`, `domain`, `active`)
-            VALUES (:username1, :username2, :domain, :active)");
+          $stmt = $pdo->prepare("INSERT INTO `alias` (`address`, `goto`, `domain`, `active`, `sender_allowed`, `sogo_visible`)
+            VALUES (:username1, :username2, :domain, :active, 1, 1)");
           $stmt->execute(array(
             ':username1' => $username,
             ':username2' => $username,
